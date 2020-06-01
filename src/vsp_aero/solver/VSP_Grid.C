@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #                              VSP_GRID constructor                            #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 VSP_GRID::VSP_GRID(void)
@@ -24,7 +24,7 @@ VSP_GRID::VSP_GRID(void)
 /*##############################################################################
 #                                                                              #
 #                                VSP_GRID init                                 #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_GRID::init(void)
@@ -65,7 +65,7 @@ void VSP_GRID::init(void)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeNodeList                               #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_GRID::SizeNodeList(int NumNodes)
@@ -80,7 +80,7 @@ void VSP_GRID::SizeNodeList(int NumNodes)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeTriList                                #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_GRID::SizeTriList(int NumTris)
@@ -105,7 +105,7 @@ void VSP_GRID::SizeTriList(int NumTris)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeLoopList                               #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_GRID::SizeLoopList(int NumLoops)
@@ -120,7 +120,7 @@ void VSP_GRID::SizeLoopList(int NumLoops)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeEdgeList                               #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VSP_GRID::SizeEdgeList(int NumEdges)
@@ -135,7 +135,7 @@ void VSP_GRID::SizeEdgeList(int NumEdges)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeKuttaNodeList                          #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_GRID::SizeKuttaNodeList(int NumberOfKuttaNodes)
@@ -208,7 +208,7 @@ VSP_GRID::~VSP_GRID(void)
 /*##############################################################################
 #                                                                              #
 #                   VSP_GRID CalculateTriNormalsAndCentroids                   #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VSP_GRID::CalculateTriNormalsAndCentroids(void)
@@ -275,7 +275,7 @@ void VSP_GRID::CalculateTriNormalsAndCentroids(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_GRID CreateTriEdges                            #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_GRID::CreateTriEdges(void)
@@ -805,7 +805,7 @@ void VSP_GRID::CreateTriEdges(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_GRID DetermineUpwindEdges                      #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_GRID::CalculateUpwindEdges(void)
@@ -945,7 +945,7 @@ void VSP_GRID::CalculateUpwindEdges(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_GRID CreateUpwindEdgeData                      #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_GRID::CreateUpwindEdgeData(void)

@@ -12,7 +12,7 @@
 /*##############################################################################
 #                                                                              #
 #                              VORTEX_SHEET constructor                        #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 VORTEX_SHEET::VORTEX_SHEET(void)
@@ -27,7 +27,7 @@ VORTEX_SHEET::VORTEX_SHEET(void)
 /*##############################################################################
 #                                                                              #
 #                                 VORTEX_SHEET init                            #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 void VORTEX_SHEET::init(void)
@@ -498,7 +498,7 @@ VORTEX_SHEET::~VORTEX_SHEET(void)
 /*##############################################################################
 #                                                                              #
 #                       VORTEX_SHEET SizeTrailingVortexList                    #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VORTEX_SHEET::SizeTrailingVortexList(int NumberOfTrailingVortices)
@@ -585,7 +585,7 @@ void VORTEX_SHEET::SizeTrailingVortexList(int NumberOfTrailingVortices)
 /*##############################################################################
 #                                                                              #
 #                      VORTEX_SHEET SetupVortexSheets                          #
-#                                                                              #
+#                           used                                                   #
 ##############################################################################*/
 
 void VORTEX_SHEET::SetupVortexSheets(void)
@@ -652,7 +652,7 @@ void VORTEX_SHEET::SetupVortexSheets(void)
 /*##############################################################################
 #                                                                              #
 #                  VORTEX_SHEET SetupPlanarVortexSheets                        #
-#                                                                              #
+#                         used                                                     #
 ##############################################################################*/
 
 void VORTEX_SHEET::SetupPlanarVortexSheets(void)
@@ -898,6 +898,8 @@ void VORTEX_SHEET::SetupPlanarVortexSheets(void)
     CoreSize_ /= NumberOfTrailingVortices_;
     
     CoreSize_ = sqrt(CoreSize_);
+
+    printf("coresize at sheet level: %2.10f", CoreSize_);
      
 }
 
@@ -1176,7 +1178,7 @@ void VORTEX_SHEET::SaveVortexState(void)
 /*##############################################################################
 #                                                                              #
 #                        VORTEX_SHEET UpdateVortexStrengths                    #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VORTEX_SHEET::UpdateVortexStrengths(int UpdateType)
@@ -1495,7 +1497,7 @@ void VORTEX_SHEET::UpdateConvectedDistance(void)
 /*##############################################################################
 #                                                                              #
 #                    VORTEX_SHEET CreateInteractionSheetList                   #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 VORTEX_SHEET_ENTRY *VORTEX_SHEET::CreateInteractionSheetList(double xyz_p[3], int &NumberOfEvaluatedSheets)
@@ -1587,7 +1589,7 @@ VORTEX_SHEET_ENTRY *VORTEX_SHEET::CreateInteractionSheetList(double xyz_p[3], in
 /*##############################################################################
 #                                                                              #
 #                        VORTEX_SHEET InducedVelocity                          #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VORTEX_SHEET::InducedVelocity(int NumberOfSheets, VORTEX_SHEET_ENTRY *SheetList, double xyz_p[3], double q[3])
@@ -1755,7 +1757,7 @@ void VORTEX_SHEET::InducedVelocity(int NumberOfSheets, VORTEX_SHEET_ENTRY *Sheet
 /*##############################################################################
 #                                                                              #
 #                        VORTEX_SHEET InducedVelocity                          #
-#                                                                              #
+#                        used     wake wake interaction                                 #
 ##############################################################################*/
 
 void VORTEX_SHEET::InducedVelocity(int NumberOfSheets, VORTEX_SHEET_ENTRY *SheetList, double xyz_p[3], double xyz_te[3], double q[3])
@@ -2324,7 +2326,7 @@ void VORTEX_SHEET::InducedVelocity(double xyz_p[3], double q[3], double xyz_te[3
 /*##############################################################################
 #                                                                              #
 #                   VORTEX_SHEET InducedKuttaVelocity                          #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VORTEX_SHEET::InducedKuttaVelocity(double xyz_p[3], double q[3])
@@ -2450,7 +2452,7 @@ void VORTEX_SHEET::InducedKuttaVelocity(double xyz_p[3], double q[3])
 /*##############################################################################
 #                                                                              #
 #              VORTEX_SHEET CreateTrailingVortexInteractionList                #
-#                                                                              #
+#                            used                                                  #
 ##############################################################################*/
 
 void VORTEX_SHEET::CreateTrailingVortexInteractionList(VORTEX_SHEET &VortexSheet, double xyz_p[3])
@@ -2539,7 +2541,7 @@ void VORTEX_SHEET::CreateTrailingVortexInteractionList(VORTEX_SHEET &VortexSheet
 /*##############################################################################
 #                                                                              #
 #                VORTEX_SHEET CreateVortexSheetInteractionList                 #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VORTEX_SHEET::CreateVortexSheetInteractionList(VORTEX_SHEET &VortexSheet, double xyz_p[3])
@@ -2640,7 +2642,7 @@ void VORTEX_SHEET::StartingVorticesInducedVelocity(VORTEX_SHEET &VortexSheet, do
 /*##############################################################################
 #                                                                              #
 #                            VORTEX_SHEET Setup                                #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VORTEX_SHEET::Setup(void)
@@ -2683,22 +2685,25 @@ void VORTEX_SHEET::Setup(void)
 /*##############################################################################
 #                                                                              #
 #                    VORTEX_TRAIL UpdateWakeLocation                           #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
-double VORTEX_SHEET::UpdateWakeLocation(void)
+double VORTEX_SHEET::UpdateWakeLocation(int a)
 {
 
     int i, Level;
     double Delta, MaxDelta;
+
     
     MaxDelta = 0.;
 
     for ( i = 1 ; i <= NumberOfTrailingVortices_ ; i++ ) {
 
        if ( DoGroundEffectsAnalysis_ ) TrailingVortexList_[i]->DoGroundEffectsAnalysis() = 1;
-       
-       Delta = TrailingVortexList_[i]->UpdateWakeLocation();
+
+       Delta = TrailingVortexList_[i]->UpdateWakeLocation(a);
+
+       TrailingVortexList_[i]->GetStreamlines();
        
        MaxDelta = MAX(MaxDelta,Delta);
     
@@ -2791,7 +2796,7 @@ void VORTEX_SHEET::UpdateGeometryLocation(void)
 /*##############################################################################
 #                                                                              #
 #                            VORTEX_SHEET Distance                             #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 double VORTEX_SHEET::Distance(double xyz[3])
@@ -2851,7 +2856,7 @@ double VORTEX_SHEET::Distance(double xyz[3])
 /*##############################################################################
 #                                                                              #
 #                            VORTEX_SHEET FarAway                              #
-#                                                                              #
+#                                        used                                      #
 ##############################################################################*/
 
 int VORTEX_SHEET::FarAway(double xyz[3])
@@ -2870,7 +2875,7 @@ int VORTEX_SHEET::FarAway(double xyz[3])
 /*##############################################################################
 #                                                                              #
 #                       VORTEX_SHEET ZeroEdgeVelocities                        #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VORTEX_SHEET::ZeroEdgeVelocities(void)
@@ -2889,7 +2894,7 @@ void VORTEX_SHEET::ZeroEdgeVelocities(void)
 /*##############################################################################
 #                                                                              #
 #                       VORTEX_SHEET ProlongateEdgeVelocities                  #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VORTEX_SHEET::ProlongateEdgeVelocities(void)
@@ -2908,7 +2913,7 @@ void VORTEX_SHEET::ProlongateEdgeVelocities(void)
 /*##############################################################################
 #                                                                              #
 #                       VORTEX_SHEET SizeCommonTEList                          #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VORTEX_SHEET::SizeCommonTEList(int NumberOfCommonTE)

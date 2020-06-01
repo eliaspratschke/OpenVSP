@@ -18,7 +18,7 @@
 /*##############################################################################
 #                                                                              #
 #                              VSP_EDGE constructor                            #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 VSP_EDGE::VSP_EDGE(void)
@@ -33,7 +33,7 @@ VSP_EDGE::VSP_EDGE(void)
 /*##############################################################################
 #                                                                              #
 #                                 VSP_EDGE init                                #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 void VSP_EDGE::init(void)
@@ -150,7 +150,7 @@ VSP_EDGE::VSP_EDGE(const VSP_EDGE &VSPEdge)
 /*##############################################################################
 #                                                                              #
 #                                 VSP_EDGE Operator =                          #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 VSP_EDGE& VSP_EDGE::operator=(const VSP_EDGE &VSPEdge)
@@ -309,7 +309,7 @@ VSP_EDGE::~VSP_EDGE(void)
 /*##############################################################################
 #                                                                              #
 #                              VSP_EDGE Setup                                  #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_EDGE::Setup_(VSP_NODE &Node1, VSP_NODE &Node2)
@@ -362,7 +362,7 @@ void VSP_EDGE::Setup_(VSP_NODE &Node1, VSP_NODE &Node2)
 /*##############################################################################
 #                                                                              #
 #                            VSP_EDGE SetMach                                  #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_EDGE::SetMach(double Mach) {
@@ -385,8 +385,8 @@ void VSP_EDGE::SetMach(double Mach) {
 
 /*##############################################################################
 #                                                                              #
-#                          VSP_EDGE BoundVortex                                #
-#                                                                              #
+#                          VSP_EDGE InducedVelocity                            #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_EDGE::InducedVelocity(double xyz_p[3], double q[3]) {
@@ -399,8 +399,8 @@ void VSP_EDGE::InducedVelocity(double xyz_p[3], double q[3]) {
 
 /*##############################################################################
 #                                                                              #
-#                          VSP_EDGE BoundVortex                                #
-#                                                                              #
+#                          VSP_EDGE InducedVelocity                            #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_EDGE::InducedVelocity(double xyz_p[3], double q[3], double CoreWidth) {
@@ -413,6 +413,8 @@ void VSP_EDGE::InducedVelocity(double xyz_p[3], double q[3], double CoreWidth) {
         
     CoreWidth_ = CoreWidth;
 
+    //printf("coresize at edge level: %2.10f", CoreWidth_);
+
     NewBoundVortex(xyz_p, q);
     
 }
@@ -420,7 +422,7 @@ void VSP_EDGE::InducedVelocity(double xyz_p[3], double q[3], double CoreWidth) {
 /*##############################################################################
 #                                                                              #
 #                          VSP_EDGE BoundVortex                                #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_EDGE::NewBoundVortex(double xyz_p[3], double q[3])
@@ -699,7 +701,7 @@ void VSP_EDGE::OldBoundVortex(double xyz_p[3], double q[3])
 /*##############################################################################
 #                                                                              #
 #                          VSP_EDGE Fint                                       #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 double VSP_EDGE::Fint(double &a, double &b, double &c, double &d, double &s)
@@ -909,7 +911,7 @@ double VSP_EDGE::GeneralizedPrincipalPartOfDownWash(void)
 /*##############################################################################
 #                                                                              #
 #                         VSP_EDGE CalculateForces                             #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_EDGE::CalculateForces(VSP_LOOP &VortexLoop)
@@ -952,7 +954,7 @@ void VSP_EDGE::CalculateForces(VSP_LOOP &VortexLoop)
 /*##############################################################################
 #                                                                              #
 #                         VSP_EDGE CalculateInducedForces                      #
-#                                                                              #
+#                                         used                                     #
 ##############################################################################*/
 
 void VSP_EDGE::CalculateInducedForces(VSP_LOOP &VortexLoop)
@@ -993,7 +995,7 @@ void VSP_EDGE::CalculateInducedForces(VSP_LOOP &VortexLoop)
 /*##############################################################################
 #                                                                              #
 #                   VSP_EDGE CalculateTrefftzForces                            #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_EDGE::CalculateTrefftzForces(double FreeStream[3])

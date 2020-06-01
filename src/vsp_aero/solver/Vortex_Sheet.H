@@ -301,7 +301,7 @@ public:
  
     int &DoGroundEffectsAnalysis(void) { return DoGroundEffectsAnalysis_; };
     
-    double UpdateWakeLocation(void);
+    double UpdateWakeLocation(int a);
     
     void UpdateGeometryLocation(double *TVec, double *OVec, QUAT &Quat, QUAT &InvQuat, int *ComponentInThisGroup);
 

@@ -226,8 +226,9 @@ int main(int argc, char **argv)
     // Load in the case file
 
     LoadCaseFile();
-        
+        //MachList_[i] etc. ... contains all machs from case, same for AOA beta, recref etc..
     // Read in FEM deformation file
+    //VSP_VLM (instance of VSP_SOLVER class gets contents of .vspaero file passed as members.
     
     if ( LoadFEMDeformation_ ) VSP_VLM().LoadFEMDeformation() = 1;
     
@@ -265,7 +266,7 @@ int main(int argc, char **argv)
             
     // Load in the VSP degenerate geometry file
     
-    VSP_VLM().ReadFile(FileName);
+    VSP_VLM().ReadFile(FileName); //FileName_ is now blablabla_DegenGeom.csv whatever FileName is.
      
     // Geometry dump, no solver
     
@@ -285,7 +286,7 @@ int main(int argc, char **argv)
 
     // Set number of farfield wake nodes
     
-    if ( NumberOfWakeNodes_ > 0 ) VSP_VLM().SetNumberOfWakeTrailingNodes(NumberOfWakeNodes_);
+    if ( NumberOfWakeNodes_ > 0 ) VSP_VLM().SetNumberOfWakeTrailingNodes(NumberOfWakeNodes_);  //just does NumberOfWakeTrailingNodes_ = NumberOfNodes
 
     // Force no wakes for some number of iterations
     
@@ -1155,11 +1156,11 @@ void LoadCaseFile(void)
 
     // Delimiters
     
-    sprintf(Comma,",");
+    sprintf(Comma,",");     //sprintf saves stuff in string
 
     // Open the case file
 
-    sprintf(file_name_w_ext,"%s.vspaero",FileName);
+    sprintf(file_name_w_ext,"%s.vspaero",FileName);  //FileNAme is stored in string file_name_w_ext. FileName is a string containing the name of the .vspaero file.
 
     if ( (case_file = fopen(file_name_w_ext,"r")) == NULL ) {
 
@@ -1191,20 +1192,20 @@ void LoadCaseFile(void)
 
     fscanf(case_file,"Sref = %lf \n",&Sref_);
     fscanf(case_file,"Cref = %lf \n",&Cref_);
-    fscanf(case_file,"Bref = %lf \n",&Bref_);
-    fscanf(case_file,"X_cg = %lf \n",&Xcg_);
+    fscanf(case_file,"Bref = %lf \n",&Bref_);  //these functions read from casefile the numbers we want and store them at the adresses provided in the last entry of each fscanf
+    fscanf(case_file,"X_cg = %lf \n",&Xcg_);    // with the precision specified in the format.
     fscanf(case_file,"Y_cg = %lf \n",&Ycg_);
     fscanf(case_file,"Z_cg = %lf \n",&Zcg_);
 
     // Load in Mach list
     
-    fgets(DumChar,2000,case_file);
+    fgets(DumChar,2000,case_file);      //casefile contains the stuff from the file called file_name_w_ext wich is just the stuff from .vspaero file.
+                                            //reads casefile and stores it in DumChar
+    if ( strstr(DumChar,Comma) == NULL ) {  //dumchar is "mach = 0.3000"
 
-    if ( strstr(DumChar,Comma) == NULL ) {
-
-       sscanf(DumChar,"Mach = %lf \n",&DumDouble);
+       sscanf(DumChar,"Mach = %lf \n",&DumDouble);      //DumDouble takes value stored in Mach = .....   DumDouble = MACH = 0.300000 \n
        
-       if ( !SetFreeStream_ ) {
+       if ( !SetFreeStream_ ) {        //SetFReestream = 0
           
           NumberOfMachs_ = 1;
        
@@ -1222,7 +1223,7 @@ void LoadCaseFile(void)
     
     else {
        
-       Next = strtok(DumChar,Comma);
+       Next = strtok(DumChar,Comma);                //nur wenn wir noch mehrere mach cases haben.
 
        sscanf(DumChar,"Mach = %lf \n",&DumDouble);
        
@@ -2024,8 +2025,8 @@ void Solve(void)
              
              // Set free stream conditions
              
-             VSP_VLM().AngleOfBeta()   = BetaList_[i] * TORAD;
-             VSP_VLM().Mach()          = MachList_[j];  
+             VSP_VLM().AngleOfBeta()   = BetaList_[i] * TORAD;   //Torad is the conversion of degrees to radian
+             VSP_VLM().Mach()             = MachList_[j];
              VSP_VLM().AngleOfAttack() =  AoAList_[k] * TORAD;
       
              VSP_VLM().RotationalRate_p() = 0.;

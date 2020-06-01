@@ -70,6 +70,8 @@ class VSP_SOLVER {
 private:
 
     // Timing stuff
+
+    double rgamma;  // relaxation for circulation update
     
     double TotalTime[5];
     
@@ -84,11 +86,11 @@ private:
     
     // Geometry type
     
-    int ModelType_;
+    int ModelType_;    //for us, it is VLM
     
     // Debug
     
-    int Verbose_;
+    int Verbose_;    //additional outputs
     
     // Test run
     
@@ -108,20 +110,20 @@ private:
     
     // Multigrid level we are solving on
     
-    int MGLevel_;
+    int MGLevel_;  //1,2,3...etc
     
     // VSP Geometry
     
-    VSP_GEOM VSPGeom_;
+    VSP_GEOM VSPGeom_;   //VSP_GEOM is the class defined in VSP_Geom.C
     
     // VSP Solver
     
     int NumberOfThreads_;    
     int NumberOfMGLevels_;
     int NumberOfEquations_;
-    int NumberOfKelvinConstraints_;
+    int NumberOfKelvinConstraints_;   // is zero for VLM
     int *LoopInKelvinConstraintGroup_;
-    int *LoopIsOnBaseRegion_;
+    int *LoopIsOnBaseRegion_;       //pointer on an integer
     
     double KelvinLambda_;
     
@@ -143,9 +145,9 @@ private:
 
     // Velocity survey points
     
-    int NumberofSurveyPoints_;
-    VSP_NODE *SurveyPointList_;    
-    
+    int NumberofSurveyPoints_;     //where do we define the survey points??
+    VSP_NODE *SurveyPointList_;      //Node class stores xyz position vector and what kind of node it is. also, every node has a circulation gamma
+                                    //pointer to VSP_NODE class
     // Solver routines and data
     
     int TimeAnalysisType_;
@@ -179,7 +181,7 @@ private:
     int AllComponentsAreFixed_;
     int ThereIsRelativeComponentMotion_;
     
-    double FreeStreamVelocity_[3];
+    double FreeStreamVelocity_[3];     //vector quantity
     double WakeAngle_[3];
     
     int NumberOfWakeTrailingNodes_;
@@ -192,9 +194,9 @@ private:
     double **UnsteadyTrailingWakeVelocity_;
     double **LocalBodySurfaceVelocity_;
     
-    int NumberOfSurfaceVortexEdges_;
+    int NumberOfSurfaceVortexEdges_;      //these four values are taken from the geometry class
     int NumberOfTrailingVortexEdges_;
-    int NumberOfVortexLoops_;
+    int NumberOfVortexLoops_;              // is equal to numberofequations in VLM case
     int NumberOfSurfaceNodes_;
     
     int NoWakeIteration_;
@@ -206,7 +208,7 @@ private:
     int Preconditioner_;
 
     double *Gamma_[3];
-    double &Gamma(int i) { return Gamma_[0][i]; };
+    double &Gamma(int i) { return Gamma_[0][i]; };     //why three gammas?
     double &GammaNM0(int i) { return Gamma_[0][i]; };    
     double &GammaNM1(int i) { return Gamma_[1][i]; };
     double &GammaNM2(int i) { return Gamma_[2][i]; };
@@ -233,7 +235,7 @@ private:
     char ConvergenceLine_[2000];
     
     int NumberOfMatrixPreconditioners_;    
-    MATPRECON *MatrixPreconditionerList_;
+    MATPRECON *MatrixPreconditionerList_;     //pointer to a preconditioner class
     
     GRADIENT *VorticityGradient_;
     
@@ -252,7 +254,7 @@ private:
     double Sref_;
     double Cref_;
     double Bref_;
-    double AverageVehicleChord_;
+    double AverageVehicleChord_;   //calculated in setup function
     
     double XYZcg_[3];
 
@@ -345,9 +347,9 @@ private:
     
     // Pointer list to vortex/grid edges
     
-    VSP_EDGE **SurfaceVortexEdge_;
+    VSP_EDGE **SurfaceVortexEdge_;      //list of pointers to edge class
     
-    VSP_EDGE &SurfaceVortexEdge(int i) { return *(SurfaceVortexEdge_[i]); };
+    VSP_EDGE &SurfaceVortexEdge(int i) { return *(SurfaceVortexEdge_[i]); };  //function to get entries of our pointerlist
  
     // Pointer list to vortex/grid loops
     
@@ -673,7 +675,23 @@ private:
     void WriteOutPSUWopWopPeggNamelist(void);
     void WriteOutPSUWopWopBPMHeaderForGroup(int c);    
     void WriteOutPSUWopWopBPMDataForGroup(int c);
-        
+
+    FILE * performance;
+    FILE * VecFile;
+    FILE * MatFile;
+
+    FILE * SolverResidual;
+
+    void GetMatrix(void);
+    void GetSolution(double *vec_in, int size);
+    void GetRHS(double *vec_in, int size);
+
+    void GetLoverD(void);
+
+    int a;
+
+    void GetSolverResidual(double rho, int a);
+
 public:
 
     // Constructor, Destructor, Copy
@@ -956,6 +974,8 @@ public:
     // Generic File header
     
     void WriteCaseHeader(FILE *fid);
+
+
 
 };
 

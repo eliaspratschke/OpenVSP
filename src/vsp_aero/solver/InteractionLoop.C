@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #               LOOP_INTERACTION_ENTRY Constructor                             #
-#                                                                              #
+#                                used                                                #
 ##############################################################################*/
 
 LOOP_INTERACTION_ENTRY::LOOP_INTERACTION_ENTRY(void)
@@ -30,7 +30,7 @@ LOOP_INTERACTION_ENTRY::LOOP_INTERACTION_ENTRY(void)
 /*##############################################################################
 #                                                                              #
 #                       LOOP_INTERACTION_ENTRY Destructor                      #
-#                                                                              #
+#                                      used                                          #
 ##############################################################################*/
 
 LOOP_INTERACTION_ENTRY::~LOOP_INTERACTION_ENTRY(void)
@@ -53,7 +53,7 @@ LOOP_INTERACTION_ENTRY::~LOOP_INTERACTION_ENTRY(void)
 /*##############################################################################
 #                                                                              #
 #                      LOOP_INTERACTION_ENTRY SizeList                         #
-#                                                                              #
+#                                        used                                        #
 ##############################################################################*/
 
 void LOOP_INTERACTION_ENTRY::SizeList(int NumberOfVortexEdges)
@@ -74,7 +74,7 @@ void LOOP_INTERACTION_ENTRY::SizeList(int NumberOfVortexEdges)
 /*##############################################################################
 #                                                                              #
 #                    LOOP_INTERACTION_ENTRY DeleteList                         #
-#                                                                              #
+#                                       used                                         #
 ##############################################################################*/
 
 void LOOP_INTERACTION_ENTRY::DeleteList(void)
@@ -108,7 +108,7 @@ LOOP_INTERACTION_ENTRY::LOOP_INTERACTION_ENTRY(const LOOP_INTERACTION_ENTRY &Loo
 /*##############################################################################
 #                                                                              #
 #                LOOP_INTERACTION_ENTRY Operator =                             #
-#                                                                              #
+#                           used                                                     #
 ##############################################################################*/
 
 LOOP_INTERACTION_ENTRY &LOOP_INTERACTION_ENTRY::operator=(const LOOP_INTERACTION_ENTRY &LoopInteractionEntry)
@@ -139,7 +139,7 @@ LOOP_INTERACTION_ENTRY &LOOP_INTERACTION_ENTRY::operator=(const LOOP_INTERACTION
 /*##############################################################################
 #                                                                              #
 #                      LOOP_INTERACTION_ENTRY UseList                          #
-#                                                                              #
+#                                   used                                             #
 ##############################################################################*/
 
 void LOOP_INTERACTION_ENTRY::UseList(int NumberOfVortexEdges, VSP_EDGE **TempList)

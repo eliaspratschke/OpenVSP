@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #                              VSP_LOOP constructor                            #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 VSP_LOOP::VSP_LOOP(void)
@@ -99,7 +99,7 @@ VSP_LOOP::VSP_LOOP(const VSP_LOOP &VSPTri)
 /*##############################################################################
 #                                                                              #
 #                                 VSP_NODE Copy                                #
-#                                                                              #
+#                                        used                                      #
 ##############################################################################*/
 
 VSP_LOOP& VSP_LOOP::operator=(const VSP_LOOP &VSPTri)
@@ -243,7 +243,7 @@ VSP_LOOP::~VSP_LOOP(void)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeNodeList                               #
-#                                                                              #
+#                             used                                                 #
 ##############################################################################*/
 
 void VSP_LOOP::SizeNodeList(int NumberOfNodes)
@@ -271,7 +271,7 @@ void VSP_LOOP::SizeNodeList(int NumberOfNodes)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeEdgeList                               #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_LOOP::SizeEdgeList(int NumberOfEdges)
@@ -309,7 +309,7 @@ void VSP_LOOP::SizeEdgeList(int NumberOfEdges)
 /*##############################################################################
 #                                                                              #
 #                          VSP_GRID SizeFineGridLoopList                       #
-#                                                                              #
+#                                       used                                       #
 ##############################################################################*/
 
 void VSP_LOOP::SizeFineGridLoopList(int NumberOfLoops)

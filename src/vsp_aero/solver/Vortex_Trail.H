@@ -162,6 +162,12 @@ private:
     SEARCH *Search_;
     
     void CreateSearchTree_(void);
+
+    FILE * streamlinex;
+    FILE * streamliney;
+    FILE * streamlinez;
+
+
     
     
 public:
@@ -285,7 +291,7 @@ public:
     
     // Update the wake location
     
-    double UpdateWakeLocation(void);     
+    double UpdateWakeLocation(int a);
     
     void ConvectWakeVorticity(int ConvectType);
     
@@ -322,6 +328,9 @@ public:
     SEARCH &Search(void) { return *Search_; };
     
     double &FarAwayRatio(void) { return FarAway_; };
+
+
+    void GetStreamlines(void);
             
 };
 

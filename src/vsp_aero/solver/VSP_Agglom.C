@@ -10,7 +10,7 @@
 /*##############################################################################
 #                                                                              #
 #                            VSP_AGGLOM Initialize_                            #              
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_AGGLOM::Initialize_(void)
@@ -44,7 +44,7 @@ void VSP_AGGLOM::Initialize_(void)
 /*##############################################################################
 #                                                                              #
 #                            VSP_AGGLOM constructor                            #              
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 VSP_AGGLOM::VSP_AGGLOM(void)
@@ -59,7 +59,7 @@ VSP_AGGLOM::VSP_AGGLOM(void)
 /*##############################################################################
 #                                                                              #
 #                            VSP_AGGLOM destructor                             #              
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 VSP_AGGLOM::~VSP_AGGLOM(void)
@@ -96,7 +96,7 @@ VSP_AGGLOM::VSP_AGGLOM(const VSP_AGGLOM &agglom)
 /*##############################################################################
 #                                                                              #
 #                          VSP_AGGLOM  SimplifyMesh_                           #
-#                                                                              #
+#                                        used                                      #
 ##############################################################################*/
 
 VSP_GRID* VSP_AGGLOM::SimplifyMesh_(VSP_GRID &Grid)
@@ -141,7 +141,7 @@ VSP_GRID* VSP_AGGLOM::SimplifyMesh_(VSP_GRID &Grid)
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM Agglomerate_                            #              
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 VSP_GRID* VSP_AGGLOM::Agglomerate_(VSP_GRID &Grid)
@@ -192,7 +192,7 @@ VSP_GRID* VSP_AGGLOM::Agglomerate_(VSP_GRID &Grid)
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM InitializeFront_                        #              
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_AGGLOM::InitializeFront_(void)
@@ -373,7 +373,7 @@ void VSP_AGGLOM::InitializeFront_(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM NextAgglomerationEdge_                  #              
-#                                                                              #
+#                                         used                                     #
 ##############################################################################*/
 
 int VSP_AGGLOM::NextAgglomerationEdge_(void)
@@ -392,7 +392,7 @@ int VSP_AGGLOM::NextAgglomerationEdge_(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM MergeVortexLoops_                       #              
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_AGGLOM::MergeVortexLoops_(void)
@@ -881,7 +881,7 @@ printf("...............................Interior loop! \n"); fflush(NULL);
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM CreateCoarseMesh_                       #              
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_AGGLOM::CreateCoarseMesh_(void)
@@ -1779,7 +1779,7 @@ VSP_GRID* VSP_AGGLOM::DeleteDuplicateNodes_(VSP_GRID &Grid)
 /*##############################################################################
 #                                                                              #
 #                      VSP_AGGLOM MergeCoLinearEdges_                          #              
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 VSP_GRID* VSP_AGGLOM::MergeCoLinearEdges_(void)
@@ -2320,7 +2320,7 @@ VSP_GRID* VSP_AGGLOM::MergeCoLinearEdges_(void)
 /*##############################################################################
 #                                                                              #
 #                      VSP_AGGLOM  CreateMixedMesh_                            #
-#                                                                              #
+#                           used                                                   #
 ##############################################################################*/
 
 void VSP_AGGLOM::CreateMixedMesh_(void)
@@ -2490,7 +2490,7 @@ void VSP_AGGLOM::CreateMixedMesh_(void)
 /*##############################################################################
 #                                                                              #
 #                            VSP_AGGLOM  CheckMesh_                            #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_AGGLOM::CheckMesh_(VSP_GRID &ThisGrid)
@@ -3330,7 +3330,7 @@ void VSP_AGGLOM::CheckForDegenerateNodes_(void)
 /*##############################################################################
 #                                                                              #
 #                  VSP_AGGLOM FindNeighborLoopOnLocalEdge_                     #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_AGGLOM::FindNeighborLoopOnLocalEdge_(VSP_GRID &ThisGrid, int Loop, int LocalEdge, 
@@ -3370,7 +3370,7 @@ void VSP_AGGLOM::FindNeighborLoopOnEdge_(VSP_GRID &ThisGrid, int Loop, int Edge,
 /*##############################################################################
 #                                                                              #
 #                        VSP_AGGLOM CalculateQuadQuality_                      #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 double VSP_AGGLOM::CalculateQuadQuality_(VSP_GRID &ThisGrid, int Node1,
@@ -3562,7 +3562,7 @@ double VSP_AGGLOM::CalculateAspectRatioOld_(VSP_GRID &ThisGrid, int Loop)
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM LoopsAreCoplanar_                       #
-#                                                                              #
+#                                       used                                       #
 ##############################################################################*/
 
 int VSP_AGGLOM::LoopsAreCoplanar_(VSP_GRID &ThisGrid, int Loop1, int Loop2, double MaxAngle)
@@ -3587,7 +3587,7 @@ int VSP_AGGLOM::LoopsAreCoplanar_(VSP_GRID &ThisGrid, int Loop1, int Loop2, doub
 /*##############################################################################
 #                                                                              #
 #                           VSP_AGGLOM EdgesAreColinear_                       #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 int VSP_AGGLOM::EdgesAreColinear_(VSP_GRID &ThisGrid, int Edge1, int Edge2, double MaxAngle)

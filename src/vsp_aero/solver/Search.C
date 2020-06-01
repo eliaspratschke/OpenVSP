@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #                                  SEARCH constructor                          #
-#                                                                              #
+#                                      used                                          #
 ##############################################################################*/
 
 SEARCH::SEARCH(void)
@@ -22,7 +22,7 @@ SEARCH::SEARCH(void)
 /*##############################################################################
 #                                                                              #
 #                                 SEARCH destructor                            #
-#                                                                              #
+#                                          used                                      #
 ##############################################################################*/
 
 SEARCH::~SEARCH(void)
@@ -56,7 +56,7 @@ Function Description:
 
 The function creates a binary tree for searching a list of xyz points... 
 originally setup for search CFD meshes... 
-
+                                                                                    used
 ##############################################################################*/
 
 void SEARCH::CreateSearchTree(VORTEX_TRAIL &Trail, int NumberOfNodes)
@@ -102,7 +102,7 @@ the pressure from the CFD grid to the FEM grid.
 
 Coded By: David J. Kinney
     Date: 12 - 30 - 1997
-
+                                                                                    used
 ##############################################################################*/
 
 void SEARCH::create_tree_leafs(SEARCH_LEAF *root)
@@ -270,7 +270,7 @@ some extra logic (one more pass of the list sort step).
 
 Coded By: David J. Kinney
     Date: 11 - 2 - 1994
-
+                                                                                         used
 ##############################################################################*/
 
 int *SEARCH::merge_sort(SEARCH_LEAF *root)
@@ -368,7 +368,7 @@ then merged such that the final list is also ordered.
 
 Coded By: David J. Kinney
     Date: 11 - 2 - 1994
-
+                                                                                         used
 ##############################################################################*/
 
 void SEARCH::merge_lists(int *list_1, int *list_2, int list_length, SEARCH_LEAF *root)
@@ -505,7 +505,7 @@ the point stored in the node structure.
 
 Coded By: David J. Kinney
     Date: 12 - 30 - 1997
-
+                                                                                         used
 ##############################################################################*/
 
 int SEARCH::SearchTree_(SEARCH_LEAF *root, TEST_NODE &node)
@@ -567,7 +567,7 @@ The function searches the final list of nodes held by the last SEARCH_LEAFt.
 
 Coded By: David J. Kinney
     Date: 12 - 30 - 1997
-
+                                                                                         used
 ##############################################################################*/
 
 void SEARCH::search_list(SEARCH_LEAF *root, TEST_NODE &node)
@@ -595,7 +595,7 @@ The function test a given node to see if it fits the user defined criteria.
 
 Coded By: David J. Kinney
     Date: 1 - 5 - 1998
-
+                                                                                                 used
 ##############################################################################*/
 
 void SEARCH::test_node(SURFACE_NODE &snode, TEST_NODE &tnode)

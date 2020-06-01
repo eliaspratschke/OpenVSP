@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #                          SPAN_LOAD_DATA Constructor                          #
-#                                                                              #
+#                                 used                                               #
 ##############################################################################*/
 
 SPAN_LOAD_DATA::SPAN_LOAD_DATA(void)
@@ -169,7 +169,7 @@ SPAN_LOAD_DATA &SPAN_LOAD_DATA::operator=(const SPAN_LOAD_DATA &SpanLoadData)
 /*##############################################################################
 #                                                                              #
 #                        SPAN_LOAD_DATA SizeList                               #
-#                                                                              #
+#                                  used                                              #
 ##############################################################################*/
 
 void SPAN_LOAD_DATA::SizeList(int NumberOfSpanStations)
@@ -242,7 +242,7 @@ void SPAN_LOAD_DATA::SizeList(int NumberOfSpanStations)
 /*##############################################################################
 #                                                                              #
 #               SPAN_LOAD_DATA CalculateAverageForcesAndMoments                #
-#                                                                              #
+#                                  used                                              #
 ##############################################################################*/
 
 void SPAN_LOAD_DATA::CalculateAverageForcesAndMoments(void)

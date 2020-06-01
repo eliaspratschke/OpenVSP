@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #                            VSP_SURFACE constructor                           #
-#                                                                              #
+#                          used
 ##############################################################################*/
 
 VSP_SURFACE::VSP_SURFACE(void)
@@ -24,7 +24,7 @@ VSP_SURFACE::VSP_SURFACE(void)
 /*##############################################################################
 #                                                                              #
 #                                VSP_SURFACE init                              #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_SURFACE::init(void)
@@ -97,7 +97,7 @@ VSP_SURFACE& VSP_SURFACE::operator=(const VSP_SURFACE &VSP_Surface)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SURFACE destructor                                   #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 VSP_SURFACE::~VSP_SURFACE(void)
@@ -109,7 +109,7 @@ VSP_SURFACE::~VSP_SURFACE(void)
 /*##############################################################################
 #                                                                              #
 #                   VSP_SURFACE SizeGeometryLists                              #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VSP_SURFACE::SizeGeometryLists(int NumI, int NumJ)
@@ -136,7 +136,7 @@ void VSP_SURFACE::SizeGeometryLists(int NumI, int NumJ)
 /*##############################################################################
 #                                                                              #
 #                   VSP_SURFACE SizeFlatPlateLists                             #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VSP_SURFACE::SizeFlatPlateLists(int NumI, int NumJ)
@@ -1449,7 +1449,7 @@ void VSP_SURFACE::GetComponentBBox(FILE *VSP_Degen_File, BBOX &ComponentBBox)
 /*##############################################################################
 #                                                                              #
 #                          VSP_SURFACE ReadWingDataFromFile                    #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SURFACE::ReadWingDataFromFile(char *Name, FILE *VSP_Degen_File)
@@ -3253,7 +3253,7 @@ void VSP_SURFACE::CheckForDegenerateXSections(void)
 /*##############################################################################
 #                                                                              #
 #                   VSP_SURFACE  CheckForDegenerateSpanSections                #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_SURFACE ::CheckForDegenerateSpanSections(void)
@@ -3496,7 +3496,7 @@ void VSP_SURFACE ::CheckForDegenerateSpanSections(void)
 /*##############################################################################
 #                                                                              #
 #                             VSP_SURFACE CreateMesh                           #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SURFACE::CreateMesh(int SurfaceID)
@@ -3569,7 +3569,7 @@ void VSP_SURFACE::CreateMesh(int SurfaceID)
 /*##############################################################################
 #                                                                              #
 #                      VSP_SURFACE CreateWingTriMesh                           #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_SURFACE::CreateWingTriMesh(int SurfaceID)
@@ -4565,7 +4565,7 @@ void VSP_SURFACE::CreateBodyTriMesh(int SurfaceID)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER CreateUpwindEdgeData                      #
-#                                                                              #
+#                                       used                                       #
 ##############################################################################*/
 
 void VSP_SURFACE::CreateUpwindEdgeData(int SurfaceID)

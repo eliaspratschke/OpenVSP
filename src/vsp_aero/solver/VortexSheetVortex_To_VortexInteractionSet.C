@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #       VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET Constructor              #
-#                                                                              #
+#                                  used                                              #
 ##############################################################################*/
 
 VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET::VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET(void)
@@ -32,7 +32,7 @@ VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET::VORTEX_SHEET_VORTEX_TO_VORTEX_INT
 /*##############################################################################
 #                                                                              #
 #         VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET Destructor             #
-#                                                                              #
+#                           used                                                   #
 ##############################################################################*/
 
 VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET::~VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET(void)
@@ -71,7 +71,7 @@ VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET::~VORTEX_SHEET_VORTEX_TO_VORTEX_IN
 /*##############################################################################
 #                                                                              #
 #          VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET SizeList              #
-#                                                                              #
+#                                     used                                           #
 ##############################################################################*/
 
 void VORTEX_SHEET_VORTEX_TO_VORTEX_INTERACTION_SET::SizeList(int NumberOfSets)

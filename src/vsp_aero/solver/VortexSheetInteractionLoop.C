@@ -9,7 +9,7 @@
 /*##############################################################################
 #                                                                              #
 #            VORTEX_SHEET_LOOP_INTERACTION_ENTRY Constructor                   #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 VORTEX_SHEET_LOOP_INTERACTION_ENTRY::VORTEX_SHEET_LOOP_INTERACTION_ENTRY(void)
@@ -32,7 +32,7 @@ VORTEX_SHEET_LOOP_INTERACTION_ENTRY::VORTEX_SHEET_LOOP_INTERACTION_ENTRY(void)
 /*##############################################################################
 #                                                                              #
 #             VORTEX_SHEET_LOOP_INTERACTION_ENTRY Destructor                   #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 VORTEX_SHEET_LOOP_INTERACTION_ENTRY::~VORTEX_SHEET_LOOP_INTERACTION_ENTRY(void)
@@ -59,7 +59,7 @@ VORTEX_SHEET_LOOP_INTERACTION_ENTRY::~VORTEX_SHEET_LOOP_INTERACTION_ENTRY(void)
 /*##############################################################################
 #                                                                              #
 #          VORTEX_SHEET_LOOP_INTERACTION_ENTRY SizeList                        #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VORTEX_SHEET_LOOP_INTERACTION_ENTRY::SizeList(int NumberOfVortexSheets)
@@ -80,7 +80,7 @@ void VORTEX_SHEET_LOOP_INTERACTION_ENTRY::SizeList(int NumberOfVortexSheets)
 /*##############################################################################
 #                                                                              #
 #             VORTEX_SHEET_LOOP_INTERACTION_ENTRY DeleteList                   #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VORTEX_SHEET_LOOP_INTERACTION_ENTRY::DeleteList(void)
@@ -120,7 +120,7 @@ VORTEX_SHEET_LOOP_INTERACTION_ENTRY::VORTEX_SHEET_LOOP_INTERACTION_ENTRY(const V
 /*##############################################################################
 #                                                                              #
 #              VORTEX_SHEET_LOOP_INTERACTION_ENTRY Operator =                  #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 VORTEX_SHEET_LOOP_INTERACTION_ENTRY &VORTEX_SHEET_LOOP_INTERACTION_ENTRY::operator=(const VORTEX_SHEET_LOOP_INTERACTION_ENTRY &VortexLoopInteractionEntry)
@@ -156,7 +156,7 @@ VORTEX_SHEET_LOOP_INTERACTION_ENTRY &VORTEX_SHEET_LOOP_INTERACTION_ENTRY::operat
 /*##############################################################################
 #                                                                              #
 #             VORTEX_SHEET_LOOP_INTERACTION_ENTRY UseList                      #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VORTEX_SHEET_LOOP_INTERACTION_ENTRY::UseList(int NumberOfVortexSheets, VORTEX_SHEET_ENTRY *TempList)

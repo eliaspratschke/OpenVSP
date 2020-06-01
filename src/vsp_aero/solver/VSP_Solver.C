@@ -17,7 +17,7 @@
 /*##############################################################################
 #                                                                              #
 #                                VSP_SOLVER constructor                        #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 VSP_SOLVER::VSP_SOLVER(void)
@@ -32,7 +32,7 @@ VSP_SOLVER::VSP_SOLVER(void)
 /*##############################################################################
 #                                                                              #
 #                                   VSP_SOLVER init                            #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SOLVER::init(void)
@@ -226,7 +226,7 @@ VSP_SOLVER::~VSP_SOLVER(void)
 /*##############################################################################
 #                                                                              #
 #                                   VSP_SOLVER Setup                           #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 void VSP_SOLVER::Setup(void)
@@ -287,7 +287,7 @@ void VSP_SOLVER::Setup(void)
     if ( DoSymmetryPlaneSolve_ == SYM_Y ) Scale_Y = 2.;
     if ( DoSymmetryPlaneSolve_ == SYM_Z ) Scale_Z = 2.;
     
-    FarDist = MAX3(Scale_X*(Xmax_ - Xmin_), Scale_Y*(Ymax_-Ymin_), Scale_Z*(Zmax_-Zmin_));
+    FarDist = MAX3(Scale_X*(Xmax_ - Xmin_), Scale_Y*(Ymax_-Ymin_), Scale_Z*(Zmax_-Zmin_));   //calculated for every MG level
     
     printf("Xmax_ - Xmin_: %f \n",Xmax_ - Xmin_);
     printf("Ymax_ - Ymin_: %f \n",Ymax_ - Ymin_);
@@ -298,7 +298,7 @@ void VSP_SOLVER::Setup(void)
     
     if ( SetFarFieldDist_ ) {
        
-       FarDist = FarFieldDist_;
+       FarDist = FarFieldDist_;     //manually set
        
     }
     
@@ -307,7 +307,9 @@ void VSP_SOLVER::Setup(void)
        FarFieldDist_ = FarDist;
        
     }
-    
+
+
+
     printf("Wake FarDist set to: %f \n",FarDist);
 
     // Find average lifting chord
@@ -336,7 +338,7 @@ void VSP_SOLVER::Setup(void)
        
     }
                  
-    AverageVehicleChord_ /= Hits;
+    AverageVehicleChord_ /= Hits;       //just averaging the chord values for all spanwise stations
 
     // Allocate space for the vortex edges
     
@@ -609,7 +611,7 @@ void VSP_SOLVER::Setup(void)
 
        }
               
-    }
+    }   //loop iterates over componentgroups and then over the surfaces of that componentgroup
 
     for ( c = 1 ; c <= NumberOfComponentGroups_ ; c++ ) {
        
@@ -625,12 +627,12 @@ void VSP_SOLVER::Setup(void)
 
        }
        
-    }
+    }    //checks if there is some wierd stuff going on with model
     
     // Determine which component groups are fixed
        
     AllComponentsAreFixed_ = 0;
-            
+            //iterates over componentgroups and checks wether they are fixed. if all are fixed, Allcomponentsarefixed = 1
     for ( i = 1 ; i <= NumberOfComponentGroups_ ; i++ ) {
        
        if ( !ComponentGroupList_[i].GeometryIsFixed() ) {
@@ -672,7 +674,7 @@ void VSP_SOLVER::Setup(void)
     printf("AllComponentsAreFixed_: %d \n",AllComponentsAreFixed_);
     
     // If all components are not fixed, check that there is indeed relative motion
-    
+    // for our wing, we get that the component isnt fixed. but there is only one component, so no relative motion.
     if ( AllComponentsAreFixed_ == 0 && NumberOfComponentGroups_ > 1 ) ThereIsRelativeComponentMotion_ = 1;
 
     // Unsteady analysis
@@ -811,7 +813,7 @@ void VSP_SOLVER::Setup(void)
     NumberOfEquations_ = NumberOfVortexLoops_ + NumberOfKelvinConstraints_;
 
     // Allocate space for the vortex edges and loops
-  
+    // dynamics memory structure
     SurfaceVortexEdge_ = new VSP_EDGE*[NumberOfSurfaceVortexEdges_ + 1];
 
     TrailingVortexEdge_ = new VORTEX_TRAIL[NumberOfTrailingVortexEdges_ + 1];
@@ -846,7 +848,7 @@ void VSP_SOLVER::Setup(void)
     zero_double_array(Residual_,      NumberOfEquations_); Residual_[0]      = 0.;
     zero_double_array(RightHandSide_, NumberOfEquations_); RightHandSide_[0] = 0.;
     zero_double_array(MatrixVecTemp_, NumberOfEquations_); RightHandSide_[0] = 0.;
-         
+      //sized and zeroed out
     if ( NoiseAnalysis_ ) {
        
        NumberOfNoiseInterpolationPoints_ = 9;
@@ -885,7 +887,7 @@ void VSP_SOLVER::Setup(void)
 
        UnsteadyTrailingWakeVelocity_[i] = new double[3];
        
-       LocalBodySurfaceVelocity_[i] = new double[3];
+       LocalBodySurfaceVelocity_[i] = new double[3];  //array that has three entries for every loop
        
        // Zero out trailing wake velocities
        
@@ -1514,9 +1516,9 @@ void VSP_SOLVER::DetermineNumberOfKelvinConstrains(void)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER Setup_VortexLoops                           #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
-
+//VSPGeom().Grid(Level).LoopList(j).VortexLoop()  LoopList probably array of class VSP_LOOP
 void VSP_SOLVER::Setup_VortexLoops(void)
 {
     
@@ -1551,7 +1553,7 @@ void VSP_SOLVER::Setup_VortexLoops(void)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER Setup_VortexEdges                         #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VSP_SOLVER::Setup_VortexEdges(void)
@@ -1566,7 +1568,7 @@ void VSP_SOLVER::Setup_VortexEdges(void)
     k = 0;
     
     for ( Level = 1 ; Level <= NumberOfMGLevels_ ; Level++ ) {
-
+ // iteration over all multigrid levels
        for ( j = 1 ; j <= VSPGeom().Grid(Level).NumberOfEdges() ; j++ ) {
        
           // Pointer from grid edge to vortex edge
@@ -1577,10 +1579,10 @@ void VSP_SOLVER::Setup_VortexEdges(void)
           
           Node1 = VSPGeom().Grid(Level).EdgeList(j).Node1();
           Node2 = VSPGeom().Grid(Level).EdgeList(j).Node2();
-
+            //two nodes describe an edge. copy edeges from geometry file
           VSPGeom().Grid(Level).EdgeList(j).Setup(VSPGeom().Grid(Level).NodeList(Node1),
                                                   VSPGeom().Grid(Level).NodeList(Node2));
-           
+           //setup(node1, node2)
           LoopL = VSPGeom().Grid(Level).EdgeList(j).LoopL();
           LoopR = VSPGeom().Grid(Level).EdgeList(j).LoopR();
 
@@ -1609,7 +1611,7 @@ void VSP_SOLVER::Setup_VortexEdges(void)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER InitializeFreeStream                        #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::InitializeFreeStream(void)
@@ -1699,7 +1701,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
     // Zero out loop level local free stream velocities
     
     for ( Level = 0 ; Level <= NumberOfMGLevels_ ; Level++ ) {
-
+//iteration over all multigrid levels and loops
        for ( i = 1 ; i <= VSPGeom().Grid(Level).NumberOfLoops() ; i++ ) {
 
           VSPGeom().Grid(Level).LoopList(i).LocalFreeStreamVelocity(0) = 0.;
@@ -1713,7 +1715,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
     }
         
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
-            
+      //iteratioin over all vortex loops
        if ( !TimeAccurate_ ) {
                        
           // Zero out trailing wake velocities
@@ -1767,7 +1769,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
  
        // Calculate local free stream conditions
-       
+
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(0) = FreeStreamVelocity_[0];
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(1) = FreeStreamVelocity_[1];
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(2) = FreeStreamVelocity_[2];
@@ -1787,7 +1789,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
     // Add in rotational velocities
 
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
-
+        //xyz has local scope
        xyz[0] = VortexLoop(i).Xc() - Xcg();            
        xyz[1] = VortexLoop(i).Yc() - Ycg();           
        xyz[2] = VortexLoop(i).Zc() - Zcg();      
@@ -1915,11 +1917,11 @@ void VSP_SOLVER::InitializeFreeStream(void)
     // Add in surface velocity terms
     
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
-
+      //Freesteamvelocity = Freestream - Bodysurfacevelocity i guess this is to find the absolute freestreamvelocity relative to the wing surface.
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(0) -= LocalBodySurfaceVelocity_[i][0];
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(1) -= LocalBodySurfaceVelocity_[i][1];
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(2) -= LocalBodySurfaceVelocity_[i][2];
-     
+     //LocalBodySurfaceVelocity_ are defined and zeroed out in .setup, calulated in .CalculateSurfaceMotion.
     }       
     
     // Update velocity magnitude
@@ -1927,7 +1929,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
  
        // Calculate local free stream conditions
-
+        //fourth component of velocity is the magnitude.
        VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(4) = sqrt( SQR(VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(0))
                                                                       + SQR(VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(1))
                                                                       + SQR(VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity(2)) );
@@ -1943,7 +1945,7 @@ void VSP_SOLVER::InitializeFreeStream(void)
 /*##############################################################################
 #                                                                              #
 #                   VSP_SOLVER RestrictFreeStreamVelocity                      #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::RestrictFreeStreamVelocity(void) 
@@ -1973,7 +1975,7 @@ void VSP_SOLVER::RestrictFreeStreamVelocity(void)
 /*##############################################################################
 #                                                                              #
 #                  VSP_SOLVER InitializeTrailingVortices                       #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::InitializeTrailingVortices(void)
@@ -1988,7 +1990,7 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
     // Initial wake in the free stream direction
 
     if ( Vinf_ > 0. ) {
-       
+       //wake angles are equal to AoA etc.
        WakeAngle_[0] = FreeStreamVelocity_[0] / Vinf_;
        WakeAngle_[1] = FreeStreamVelocity_[1] / Vinf_;
        WakeAngle_[2] = FreeStreamVelocity_[2] / Vinf_;
@@ -2026,7 +2028,7 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
        FarDist = FarFieldDist_;
        
     }
-    
+    //set farfield
     else {
        
        FarFieldDist_ = FarDist;
@@ -2083,7 +2085,7 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
     VecX = new double[VSPGeom().Grid(MGLevel_).NumberOfNodes() + 1];
     VecY = new double[VSPGeom().Grid(MGLevel_).NumberOfNodes() + 1];
     VecZ = new double[VSPGeom().Grid(MGLevel_).NumberOfNodes() + 1];
-    
+    //this loop initializes an array of vectors so to speak for every loop in every grid level
     for ( j = 1 ; j <= VSPGeom().Grid(MGLevel_).NumberOfNodes() ; j++ ) {
 
        VecX[j] = 0.;
@@ -2101,7 +2103,7 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
           VecTe[0] = VecTe[1] = VecTe[2] = 0.;
           
           for ( j = 1 ; j <= 2 ; j++ ) {
-             
+             //every edge has two loops that it is part of.
              if ( j == 1 ) Loop = VSPGeom().Grid(MGLevel_).EdgeList(i).Loop1();
              
              if ( j == 2 ) Loop = VSPGeom().Grid(MGLevel_).EdgeList(i).Loop2();
@@ -2146,7 +2148,8 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
        }
        
     }    
-    
+    //calculate all trailing edge vectors and store them in VecX, VecY, VecZ
+    //normalize the vectors
     for ( j = 1 ; j <= VSPGeom().Grid(MGLevel_).NumberOfKuttaNodes() ; j++ ) {
 
        Node = VSPGeom().Grid(MGLevel_).KuttaNode(j);
@@ -2194,7 +2197,7 @@ void VSP_SOLVER::InitializeTrailingVortices(void)
     }
     
     printf("There are: %10d Vortex Sheets \n", NumberOfVortexSheets_);
-    
+    //what do these vortexheets do? they are the collection of discrete trailing vortices.
     if ( VortexSheet_ != NULL ) {
 
        for ( i = 0 ; i < NumberOfThreads_ ; i++ ) {
@@ -2686,7 +2689,7 @@ printf("Adding edge at: %f %f %f with MinCoreSize: %f \n",SurfaceVortexEdge(p).X
 /*##############################################################################
 #                                                                              #
 #                               VSP_SOLVER Solve                               #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SOLVER::Solve(int Case)
@@ -2740,6 +2743,7 @@ void VSP_SOLVER::Solve(int Case)
     // Initialize free stream
     
     InitializeFreeStream();
+    //we now have established the freestream for all vortex loops acccording to our setup
     
     // Recalculate interaction lists if Mach crossed over Mach = 1
     
@@ -3024,7 +3028,8 @@ void VSP_SOLVER::Solve(int Case)
           // Output status
 
           OutputStatusFile();
-          
+
+          GetLoverD();   //Bad access at iteration 57, for some reason file pointer becomes null
           // Write out group data, and any rotor data
   
           if ( !TimeAccurate_ ) CalculateRotorCoefficientsForGroup(0);   
@@ -4018,7 +4023,7 @@ void VSP_SOLVER::UpdateWakeConvectedDistance(void)
 /*##############################################################################
 #                                                                              #
 #                  VSP_SOLVER CalculateRightHandSide                           #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateRightHandSide(void)
@@ -4032,7 +4037,7 @@ void VSP_SOLVER::CalculateRightHandSide(void)
     for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
 
        RightHandSide_[i] = -vector_dot(VortexLoop(i).Normal(), VSPGeom().Grid(1).LoopList(i).LocalFreeStreamVelocity());
-
+       //printf("RHS: %2.10f", RightHandSide_[i]);
     }
     
     // Modify righthandside for control surface deflections
@@ -4079,7 +4084,7 @@ void VSP_SOLVER::CalculateRightHandSide(void)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER SolveLinearSystem                             #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::SolveLinearSystem(void)
@@ -4337,7 +4342,7 @@ void VSP_SOLVER::CalculateNeighborCoefs(void)
 /*##############################################################################
 #                                                                              #
 #                    VSP_SOLVER CreateMatrixPreconditioners                    #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::CreateMatrixPreconditioners(void)
@@ -4510,15 +4515,15 @@ void VSP_SOLVER::CreateMatrixPreconditioners(void)
 /*##############################################################################
 #                                                                              #
 #           VSP_SOLVER CreateMatrixPreconditionersDataStructure                #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
-
+//makes matrixpreconditionerlist_ an array of MATPRECON classes
 void VSP_SOLVER::CreateMatrixPreconditionersDataStructure(void)
 {
 
     int i, j, k, p, Done, Loops, Level, *LoopList, *NumLoops;
     int TargetLoops, MinLoops, MaxLoops, AvgLoops;
-    
+    //LoopList initialized below
     printf("Creating matrix preconditioners data structure... \n");
     
     if ( VSPGeom().NumberOfGridLevels() == 1 ) {
@@ -4653,7 +4658,7 @@ void VSP_SOLVER::CreateMatrixPreconditionersDataStructure(void)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER CalculateNumberOfFineLoops                    #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 int VSP_SOLVER::CalculateNumberOfFineLoops(int Level, VSP_LOOP &Loop, int *LoopList)
@@ -4692,7 +4697,7 @@ int VSP_SOLVER::CalculateNumberOfFineLoops(int Level, VSP_LOOP &Loop, int *LoopL
 /*##############################################################################
 #                                                                              #
 #                 VSP_SOLVER DoPreconditionedMatrixMultiply                    #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_SOLVER::DoPreconditionedMatrixMultiply(double *vec_in, double *vec_out)
@@ -4707,7 +4712,7 @@ void VSP_SOLVER::DoPreconditionedMatrixMultiply(double *vec_in, double *vec_out)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER DoMatrixMultiply                            #
-#                                                                              #
+#                                      used                                        #
 ##############################################################################*/
 
 void VSP_SOLVER::DoMatrixMultiply(double *vec_in, double *vec_out)
@@ -4732,7 +4737,7 @@ void VSP_SOLVER::DoMatrixMultiply(double *vec_in, double *vec_out)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER MatrixMultiply                            #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_SOLVER::MatrixMultiply(double *vec_in, double *vec_out)
@@ -4791,7 +4796,7 @@ void VSP_SOLVER::MatrixMultiply(double *vec_in, double *vec_out)
              // Calculate influence of this edge
   
              VortexEdge->InducedVelocity(VSPGeom().Grid(Level).LoopList(Loop).xyz_c(), q);
-     
+          //q is the vector that is the induced velcity
              U += q[0];
              V += q[1];
              W += q[2];
@@ -5057,7 +5062,7 @@ void VSP_SOLVER::MatrixMultiply(double *vec_in, double *vec_out)
 /*##############################################################################
 #                                                                              #
 #                      VSP_SOLVER ZeroLoopVelocities                           #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VSP_SOLVER::ZeroLoopVelocities(void) 
@@ -5086,7 +5091,7 @@ void VSP_SOLVER::ZeroLoopVelocities(void)
 /*##############################################################################
 #                                                                              #
 #                      VSP_SOLVER ProlongateVelocity                           #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_SOLVER::ProlongateVelocity(void) 
@@ -5183,7 +5188,7 @@ void VSP_SOLVER::MatrixTransposeMultiply(double *vec_in, double *vec_out)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER DoMatrixPrecondition                          #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::DoMatrixPrecondition(double *vec_in)
@@ -5300,7 +5305,7 @@ void VSP_SOLVER::DoMatrixPrecondition(double *vec_in)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER CalculateVelocities                       #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateVelocities(void)
@@ -5595,7 +5600,7 @@ void VSP_SOLVER::CalculateVelocities(void)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER UpdateWakeLocations                         #
-#                                                                              #
+#                                    used                                          #
 ##############################################################################*/
 
 void VSP_SOLVER::UpdateWakeLocations(void)
@@ -5641,7 +5646,7 @@ void VSP_SOLVER::UpdateWakeLocations(void)
 
     // Add in rotational velocities
 
-    for ( m = 1 ; m <= NumberOfVortexSheets_ ; m++ ) {     
+    for ( m = 1 ; m <= NumberOfVortexSheets_ ; m++ ) {
 
        for ( i = 1 ; i <= VortexSheet(m).NumberOfTrailingVortices() ; i++ ) {
          
@@ -6009,7 +6014,7 @@ void VSP_SOLVER::UpdateWakeLocations(void)
     }       
 
     // For any trailing vortices leaving 'identical' trailing edges to have the same velocities
-    
+    //not entirely sure what thsi does.
     if ( ModelType_ == VLM_MODEL ) {
 
        // Agglomerate velocities
@@ -6091,7 +6096,7 @@ void VSP_SOLVER::UpdateWakeLocations(void)
 
        if ( DoGroundEffectsAnalysis() ) VortexSheet(m).DoGroundEffectsAnalysis() = 1;
 
-       Delta = VortexSheet(m).UpdateWakeLocation();
+       Delta = VortexSheet(m).UpdateWakeLocation(CurrentWakeIteration_);
        
        MaxDelta = MAX(MaxDelta,Delta);
 
@@ -7181,7 +7186,7 @@ void VSP_SOLVER::ResetGeometry(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_SOLVER Do_GMRES_Solve                          #
-#                                                                              #
+#                                   used                                           #
 ##############################################################################*/
 
 void VSP_SOLVER::Do_GMRES_Solve(void)
@@ -7189,6 +7194,7 @@ void VSP_SOLVER::Do_GMRES_Solve(void)
 
     int i, Iters;
     double ResMax, ResRed, ResFin;
+    char s[] = "solution", r[] = "RHS";
 
     for ( i = 0 ; i <= NumberOfVortexLoops_ ; i++ ) {
        
@@ -7203,13 +7209,26 @@ void VSP_SOLVER::Do_GMRES_Solve(void)
     // Calculate the initial, preconditioned, residual
 
     CalculateResidual();
-   
+/*
+    if(CurrentWakeIteration_ == 1){
+        GetRHS(Residual_, NumberOfVortexLoops_ +1);
+    }
+     */                                                                   //test RHS here and two lines further down.
     DoMatrixPrecondition(Residual_);
+
+
 
     // Convergence criteria
 
     ResMax = 0.1*Vref_;
+   /*
+    if(CurrentWakeIteration_ == 1){
+        ResRed = 0.0001;}
+    else{ResRed = 0.1;} */
+
+
     ResRed = 0.1;
+    //rgamma = 0.8
  
     // Use preconditioned GMRES to solve the linear system
      
@@ -7226,9 +7245,12 @@ void VSP_SOLVER::Do_GMRES_Solve(void)
 
     // Update solution vector
 
+
+
     for ( i = 0 ; i <= NumberOfVortexLoops_ ; i++ ) {
 
-       Gamma(i) = GammaNM1(i) + Delta_[i];
+
+        Gamma(i) = GammaNM1(i) + Delta_[i];
 
     }
 
@@ -7265,7 +7287,7 @@ void VSP_SOLVER::Do_GMRES_Solve(void)
 /*##############################################################################
 #                                                                              #
 #                           VSP_SOLVER CalculateResidual                       #
-#                                                                              #
+#                                        used                                      #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateResidual(void)
@@ -7357,7 +7379,7 @@ void VSP_SOLVER::CalculateResidual(void)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER GMRES_Solver                              #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations, 0 <= i < Neq
@@ -7376,6 +7398,7 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
 
     double av, *c, Epsilon, *g, **h, Dot, Mu, *r;
     double rho, rho_zero, rho_tol, *s, **v, *y, NowTime;
+
     
     Epsilon = 1.0e-03;
     
@@ -7418,6 +7441,8 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
 
     Done = 0;
 
+    //if(CurrentWakeIteration_ == 1){ GetMatrix();}    //output system matrix
+    //if(CurrentWakeIteration_ == 1){GetRHS(RightHandSide, Neq);}
     while ( Iter < IterMax && ( ( rho > rho_tol || rho > ErrorMax ) && !Done ) ) {
 
       // Matrix Multiplication
@@ -7427,21 +7452,26 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
       for ( i = 0; i < Neq; i++ ) {
 
         r[i] = RightHandSide[i] - r[i];
-   
+
       }
 
       rho = sqrt(VectorDot(Neq,r,r));
-
+      //printf("rho aka error %f", rho);
       if ( Iter == 0 ) rho_zero = rho;
 
       if ( Iter == 0 ) rho_tol = rho * ErrorReduction;
+
+      //if ( Iter == 0 && CurrentWakeIteration_ == 1) {GetSolverResidual(rho, 1);}
+      //if ( Iter == 0 ) {GetSolverResidual(rho, 0);}
     
       if ( Verbose && Iter == 0 && !TimeAccurate_ ) printf("Wake Iter: %5d / %-5d ... GMRES Iter: %5d ... Red: %10.5f / %-10.5f ...  Max: %10.5f / %-10.5f \r",CurrentWakeIteration_, WakeIterations_, 0,log10(rho/rho_zero),log10(ErrorReduction), log10(rho), log10(ErrorMax)); fflush(NULL);
       if ( Verbose && Iter == 0 &&  TimeAccurate_ ) printf("TStep: %-5d / %-5d ... Time: %10.5f ... GMRES Iter: %5d ... Red: %10.5f / %-10.5f ...  Max: %-10.5f / %10.5f \r",Time_,NumberOfTimeSteps_,CurrentTime_, 0,log10(rho/rho_zero),log10(ErrorReduction), log10(rho), log10(ErrorMax)); fflush(NULL);
           
       for ( i = 0; i < Neq; i++ ) {
-      
+      //normalizing r[i]
          v[0][i] = r[i] / rho;
+         //double m = v[0][i];
+         //printf("%i %f \n", i, m);
       
       }
     
@@ -7554,6 +7584,11 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
      
          rho = fabs ( g[k+1] );
 
+         //GetSolverResidual(rho, 0);
+
+         if (rho <= rho_tol && CurrentWakeIteration_ == 1){GetSolverResidual(rho, 1);}
+         if (rho <= rho_tol && CurrentWakeIteration_ != 1){GetSolverResidual(rho, 0);}
+
          TotalIterations = TotalIterations + 1;
          
          NowTime = myclock();
@@ -7573,7 +7608,7 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
 
       for ( i = k - 1; 0 <= i; i-- ) {
 
-         y[i] = g[i];
+         y[i] = g[i];  //solution to lls problem after givens rotating it
  
          for ( j = i+1; j < k + 1; j++ ) {
  
@@ -7603,7 +7638,16 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
     IterFinal = TotalIterations;
 
     ResFinal = log10(rho/rho_zero);
+    //if(CurrentWakeIteration_ == 1) {GetSolution(x, Neq);}
 
+   /* if(CurrentWakeIteration_ == 1) {
+        printf("Solution: ");
+        for (i = 0; i <= Neq; i++) {
+            double sol = x[i];
+            printf(" %f \n", sol);
+        }
+    }
+*/
     // Free up memory
 
     delete [] c;
@@ -7638,7 +7682,7 @@ void VSP_SOLVER::GMRES_Solver(int Neq,                   // Number of Equations,
 /*##############################################################################
 #                                                                              #
 #                              VSP_SOLVER VectorDot                            #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 double VSP_SOLVER::VectorDot(int Neq, double *r, double *s) 
@@ -7663,7 +7707,7 @@ double VSP_SOLVER::VectorDot(int Neq, double *r, double *s)
 /*##############################################################################
 #                                                                              #
 #                        VSP_SOLVER  ApplyGivensRotation                       #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::ApplyGivensRotation(double c, double s, int k, double *g)
@@ -7684,7 +7728,7 @@ void VSP_SOLVER::ApplyGivensRotation(double c, double s, int k, double *g)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER CalculateForces                           #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateForces(void)
@@ -7760,7 +7804,7 @@ void VSP_SOLVER::ReCalculateForces(void)
 /*##############################################################################
 #                                                                              #
 #                         VSP_SOLVER CalculateTrefftzForces                    #
-#                                                                              #
+#                                       used                                       #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateTrefftzForces(void)
@@ -7869,7 +7913,7 @@ void VSP_SOLVER::CalculateTrefftzForces(void)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER CalculateKuttaJukowskiForces                  #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateKuttaJukowskiForces(void)
@@ -7993,7 +8037,7 @@ void VSP_SOLVER::CalculateUnsteadyForces(void)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER CalculateDeltaCPs                           #
-#                                                                              #
+#                             used                                                 #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateDeltaCPs(void)
@@ -9018,7 +9062,7 @@ void VSP_SOLVER::CalculateVorticityGradient(void)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER IntegrateForcesAndMoments                     #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 void VSP_SOLVER::IntegrateForcesAndMoments(int UnsteadyEvaluation)
@@ -9308,7 +9352,7 @@ void VSP_SOLVER::IntegrateForcesAndMoments(int UnsteadyEvaluation)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER CalculateCLmaxLimitedForces                   #
-#                                                                              #
+#                                     used                                         #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateCLmaxLimitedForces(int UnsteadyEvaluation)
@@ -11098,7 +11142,7 @@ void VSP_SOLVER::CalculateVelocitySurvey(void)
 /*##############################################################################
 #                                                                              #
 #                  VSP_SOLVER WriteOutAerothermalDatabaseHeader                #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::WriteOutAerothermalDatabaseHeader(void)
@@ -11332,7 +11376,7 @@ void VSP_SOLVER::ReadInAerothermalDatabaseHeader(void)
 /*##############################################################################
 #                                                                              #
 #                VSP_SOLVER WriteOutAerothermalDatabaseGeometry                #
-#                                                                              #
+#                           used                                                   #
 ##############################################################################*/
 
 void VSP_SOLVER::WriteOutAerothermalDatabaseGeometry(void)
@@ -12635,7 +12679,7 @@ void VSP_SOLVER::LoadRestartFile(void)
 /*##############################################################################
 #                                                                              #
 #            VSP_SOLVER CreateSurfaceVorticesInteractionList                   #
-#                                                                              #
+#                       used                                                       #
 ##############################################################################*/
 
 void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
@@ -12657,13 +12701,13 @@ void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
     // Allocate space for final interaction lists
 
     MaxInteractionLoops = MaxInteractionEdges = 0;
-    
+    //loop over all grid levels and add the loopnumbers.
     for ( Level = 1 ; Level <= VSPGeom().NumberOfGridLevels() ; Level++ ) {
        
        MaxInteractionLoops += VSPGeom().Grid(Level).NumberOfLoops();
        
     }
-
+//ALL EDGES involved in computation
     for ( Level = 1 ; Level <= VSPGeom().NumberOfGridLevels() ; Level++ ) {
 
        MaxInteractionEdges += VSPGeom().Grid(Level).NumberOfEdges();
@@ -12674,7 +12718,7 @@ void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
     if ( InteractionLoopList_[LoopType] != 0 ) delete [] InteractionLoopList_[LoopType];
     
     NumberOfInteractionLoops_[LoopType] = 0;
-
+ //array of length maxinetactionloops +1 of Loop interaction entry type.
     InteractionLoopList_[LoopType] = new LOOP_INTERACTION_ENTRY[MaxInteractionLoops + 1];
 
     TotalHits = 0;
@@ -12694,7 +12738,7 @@ void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
        }
        
        else {
-          
+          //for our case, this is it
           InteractionType = NO_RELATIVE_MOTION;
 
        }
@@ -12724,15 +12768,16 @@ void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
     for ( k = 1 ; k <= NumberOfVortexLoops_ ; k++ ) {
      
        if ( LoopType == FIXED_LOOPS && (k/1000)*1000 == k ) printf("%d / %d \r",k,NumberOfVortexLoops_);fflush(NULL);
-
+            //store cootdinate of loop in vector?
        xyz[0] = VortexLoop(k).Xc();
        xyz[1] = VortexLoop(k).Yc();
        xyz[2] = VortexLoop(k).Zc();
-
+        //create the influence list for every loop, i guess each of these is a row of the A-matrix?
        TempInteractionList = CreateInteractionList(VortexLoop(k).ComponentID(), k, InteractionType, xyz, NumberOfEdges);
 
        // Save the sorted list
-      
+       // Save the sorted list
+
        InteractionLoopList_[LoopType][k].Level() = 1;
       
        InteractionLoopList_[LoopType][k].Loop() = k;
@@ -13088,7 +13133,7 @@ void VSP_SOLVER::CreateSurfaceVorticesInteractionList(int LoopType)
 /*##############################################################################
 #                                                                              #
 #                 VSP_SOLVER UpdateWakeVortexInteractionLists                  #
-#                                                                              #
+#                          used                                                    #
 ##############################################################################*/
 
 void VSP_SOLVER::UpdateWakeVortexInteractionLists(void)
@@ -13135,7 +13180,7 @@ void VSP_SOLVER::UpdateWakeVortexInteractionLists(void)
     for ( v = 1 ; v <= NumberOfVortexSheets_ ; v++ ) {
        
        p = 0;
-       
+
        for ( w = 1 ; w <= NumberOfVortexSheets_ ; w++ ) {
  
           for ( t = 1 ; t <= VortexSheet(w).NumberOfTrailingVortices() ; t++ ) {
@@ -13191,7 +13236,7 @@ void VSP_SOLVER::UpdateWakeVortexInteractionLists(void)
 /*##############################################################################
 #                                                                              #
 #               VSP_SOLVER CreateVortexSheetInteractionList                    #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 VORTEX_SHEET_LOOP_INTERACTION_ENTRY* VSP_SOLVER::CreateVortexSheetInteractionList(int v, int &NumberOfVortexSheetInteractionLoops)
@@ -13568,7 +13613,7 @@ VORTEX_SHEET_LOOP_INTERACTION_ENTRY* VSP_SOLVER::CreateVortexSheetInteractionLis
 /*##############################################################################
 #                                                                              #
 #               VSP_SOLVER CreateVortexTrailInteractionList                    #
-#                                                                              #
+#                            used                                                  #
 ##############################################################################*/
 
 VORTEX_SHEET_LOOP_INTERACTION_ENTRY* VSP_SOLVER::CreateVortexTrailInteractionList(int v, int w, int t, int &NumberOfVortexSheetInteractionEdges)
@@ -13984,7 +14029,7 @@ void VSP_SOLVER::CalculateSurfaceInducedVelocityAtPoint(int ComponentID, int pLo
 /*##############################################################################
 #                                                                              #
 #            VSP_SOLVER CalculateSurfaceInducedVelocityAtPoint                 #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateSurfaceInducedVelocityAtPoint(double xyz[3], double q[3], double CoreWidth)
@@ -14186,7 +14231,7 @@ void VSP_SOLVER::CalculateWingSurfaceInducedVelocityAtPoint(double xyz[3], doubl
 /*##############################################################################
 #                                                                              #
 #                    VSP_SOLVER CreateInteractionList                          #
-#                                                                              #
+#                                 used                                             #
 ##############################################################################*/
 
 VSP_EDGE **VSP_SOLVER::CreateInteractionList(int ComponentID, int pLoop, int InteractionType, double xyz[3], int &NumberOfInteractionEdges)
@@ -14266,11 +14311,11 @@ VSP_EDGE **VSP_SOLVER::CreateInteractionList(int ComponentID, int pLoop, int Int
           // If we are far enough away from this loop, add it's edges to the interaction list
                 
           MoveDownLevel = 0;
-   
+            //calculate distance vector from the point we are looking at to the loop we are loking at (while loop iterates over all of them)
           Vec[0] = xyz[0] - VSPGeom().Grid(Level).LoopList(Loop).Xc();
           Vec[1] = xyz[1] - VSPGeom().Grid(Level).LoopList(Loop).Yc();
           Vec[2] = xyz[2] - VSPGeom().Grid(Level).LoopList(Loop).Zc();
-                
+          //distance so we can decide wich coarseness level of rid is appropriate for our calculation
           Distance = sqrt( SQR(Vec[0]) + SQR(Vec[1]) + SQR(Vec[2]) );
                   
           Test = FarAway_ * ( VSPGeom().Grid(Level).LoopList(Loop).Length() + VSPGeom().Grid(Level).LoopList(Loop).CentroidOffSet() );
@@ -14555,7 +14600,7 @@ void VSP_SOLVER::ProlongateSolutionFromGrid(int Level)
 /*##############################################################################
 #                                                                              #
 #                   VSP_SOLVER RestrictSolutionFromGrid                        #
-#                                                                              #
+#                              used                                                #
 ##############################################################################*/
 
 void VSP_SOLVER::RestrictSolutionFromGrid(int Level)
@@ -14934,7 +14979,7 @@ void VSP_SOLVER::InterpolateSolutionFromGrid(int Level)
 /*##############################################################################
 #                                                                              #
 #                       VSP_SOLVER UpdateVortexEdgeStrengths                   #
-#                                                                              #
+#                                  used                                            #
 ##############################################################################*/
 
 void VSP_SOLVER::UpdateVortexEdgeStrengths(int Level, int UpdateType)
@@ -15020,7 +15065,7 @@ void VSP_SOLVER::UpdateVortexEdgeStrengths(int Level, int UpdateType)
 /*##############################################################################
 #                                                                              #
 #                          VSP_SOLVER ZeroVortexState                          #
-#                                                                              #
+#                                       used                                       #
 ##############################################################################*/
 
 void VSP_SOLVER::ZeroVortexState(void)
@@ -15035,7 +15080,7 @@ void VSP_SOLVER::ZeroVortexState(void)
        if ( Level == 1 ) {
    
           for ( i = 1 ; i <= NumberOfVortexLoops_ ; i++ ) {
-           
+           //accessing member
              VortexLoop(i).Gamma() = 0.;
    
           }
@@ -15045,7 +15090,7 @@ void VSP_SOLVER::ZeroVortexState(void)
        // Calculate delta-gammas for each surface vortex edge
        
        for ( i = 1 ; i <= VSPGeom().Grid(Level).NumberOfEdges() ; i++ ) {
-   
+
           VSPGeom().Grid(Level).EdgeList(i).Gamma() = 0.;
                      
        }    
@@ -15085,7 +15130,7 @@ void VSP_SOLVER::ZeroVortexState(void)
 /*##############################################################################
 #                                                                              #
 #                      VSP_SOLVER OutputStatusFile                             #
-#                                                                              #
+#                         used                                                     #
 ##############################################################################*/
 
 void VSP_SOLVER::OutputStatusFile(void)
@@ -15093,6 +15138,8 @@ void VSP_SOLVER::OutputStatusFile(void)
 
     int i;
     double E, AR, ToQS, Time;
+
+
     
     AR = Bref_ * Bref_ / Sref_;
 
@@ -15111,8 +15158,7 @@ void VSP_SOLVER::OutputStatusFile(void)
     i = CurrentWakeIteration_;
 
     if ( !TimeAccurate_ ) {
-       
-       fprintf(StatusFile_,"%9d %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf\n",
+        fprintf(StatusFile_,"%9d %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf %9.5lf\n",
                i,
                Mach_,
                AngleOfAttack_/TORAD,
@@ -15288,7 +15334,7 @@ void VSP_SOLVER::OutputZeroLiftDragToStatusFile(void)
 /*##############################################################################
 #                                                                              #
 #                     VSP_SOLVER WriteCaseHeader                               #
-#                                                                              #
+#                                used                                              #
 ##############################################################################*/
 
 void VSP_SOLVER::WriteCaseHeader(FILE *fid)
@@ -15394,7 +15440,7 @@ double VSP_SOLVER::CalculateLeadingEdgeSuctionFraction(double Mach, double ToC, 
 /*##############################################################################
 #                                                                              #
 #            VSP_SOLVER CalculateRotorCoefficientsForGroup                     #
-#                                                                              #
+#                               used                                               #
 ##############################################################################*/
 
 void VSP_SOLVER::CalculateRotorCoefficientsForGroup(int Group)
@@ -19453,5 +19499,158 @@ void VSP_SOLVER::WriteOutPSUWopWopLoadingDataForGroup(int c)
     }    
 
 }
- 
- 
+
+
+
+
+/*##############################################################################
+#                                                                              #
+#                           VSP_SOLVER GetMatrix                               #
+#                                                                              #
+##############################################################################*/
+
+void VSP_SOLVER::GetMatrix(void){
+
+
+    double * probe, * column;
+    probe = new double[NumberOfVortexLoops_];
+    column = new double[NumberOfVortexLoops_];
+    double coeff;
+
+
+
+    MatFile = fopen ("Influence.txt","w");
+
+    printf("Acquiring influence matrix...");
+
+
+        for (int i = 1; i <= NumberOfVortexLoops_; i++) {
+
+            zero_double_array(probe, NumberOfVortexLoops_);
+            zero_double_array(column, NumberOfVortexLoops_);
+
+            probe[i] = 1.;
+
+            MatrixMultiply(probe, column);
+
+            printf("column : %i \n", i);
+
+            if (i != 1){
+                fprintf(MatFile,"\n");
+                }
+
+            for (int j = 1; j <= NumberOfVortexLoops_; j++) {
+                coeff = column[j];
+                printf("%2.10f, \n", coeff);
+                if (j == NumberOfVortexLoops_ ){fprintf(MatFile,"%2.10f", coeff); }
+                else{ fprintf(MatFile,"%2.10f, ", coeff); }
+
+            }
+        }
+
+    fclose(MatFile);
+    delete [] probe;
+    delete [] column;
+}
+
+
+
+/*##############################################################################
+#                                                                              #
+#                           VSP_SOLVER GetSolution                               #
+#                                                                              #
+##############################################################################*/
+
+void VSP_SOLVER::GetSolution(double *vec_in, int size){
+
+
+
+    double coeff;
+
+    VecFile = fopen ("Solution.txt","w");
+
+
+    for (int i = 1; i < size; i++){
+
+        coeff = vec_in[i];
+        printf("%2.10f, \n", coeff);
+        fprintf(VecFile,"%2.10f\n", coeff);
+
+    }
+
+    fclose(VecFile);
+
+}
+
+
+
+/*##############################################################################
+#                                                                              #
+#                           VSP_SOLVER GetRHS                               #
+#                                                                              #
+##############################################################################*/
+
+void VSP_SOLVER::GetRHS(double *vec_in, int size){
+
+
+    double coeff;
+
+    VecFile = fopen ("RHS.txt","w");
+
+
+    for (int i = 1; i < size; i++){
+
+        coeff = vec_in[i];
+        printf("Rhs: %2.10f, \n", coeff);
+        fprintf(VecFile,"%2.10f\n", coeff);
+
+    }
+
+    //fclose(VecFile);
+
+}
+
+
+
+/*##############################################################################
+#                                                                              #
+#                           VSP_SOLVER GetLoverD                               #
+#                                                                              #
+##############################################################################*/
+
+void VSP_SOLVER::GetLoverD(void){
+
+    if(CurrentWakeIteration_ == 0 || CurrentWakeIteration_ == 1){performance = fopen("LoverD.txt", "w");}
+
+    else{performance = fopen("LoverD.txt", "a");}
+
+    fprintf(performance, "%2.15f\n", CL()/(CDo() + CD()));
+
+
+}
+
+
+/*##############################################################################
+#                                                                              #
+#                           VSP_SOLVER GetSolverResidual                               #
+#                                                                              #
+##############################################################################*/
+
+void VSP_SOLVER::GetSolverResidual(double rho, int a) {
+
+    double res;
+
+
+
+    if (a == 1) { SolverResidual = fopen("GMRES.txt", "w"); }
+
+    else { SolverResidual = fopen("GMRES.txt", "a"); }
+
+    res = rho;
+
+    fprintf(SolverResidual, "%2.17f\n", res);
+
+
+}
+
+

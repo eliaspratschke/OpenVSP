@@ -19509,6 +19509,8 @@ void VSP_SOLVER::WriteOutPSUWopWopLoadingDataForGroup(int c)
 #                                                                              #
 ##############################################################################*/
 
+//see thesis for how this works.
+
 void VSP_SOLVER::GetMatrix(void){
 
 
@@ -19617,6 +19619,8 @@ void VSP_SOLVER::GetRHS(double *vec_in, int size){
 #                           VSP_SOLVER GetLoverD                               #
 #                                                                              #
 ##############################################################################*/
+
+//writes out L/D into  file. each value is separated by a \n
 
 void VSP_SOLVER::GetLoverD(void){
 

@@ -2129,9 +2129,11 @@ void VORTEX_TRAIL::SkipReadInFile(FILE *adb_file)
 
 void VORTEX_TRAIL::GetStreamlines(void){
 
-//reads out streamlines. for more complex models, we get a bad access exception. also, the last point of every streamline is written twice.
-//this does not seem to cause any problems with the plotting in python.
-//opens files as append, so delete streamline files for every new case
+//reads out streamlines. it seems that the writing of the file can
+//cause VSPAero to crash. usually this happens after approx. 50 iterations.
+//we get a BAD_ACCESS error code. I tried checking the file pointer before
+//every usage. Not sure how to fix it.
+//opens files as append, so delete streamline files for every new case.
 
 
         streamlinex = fopen("Streamlinex.txt", "a");

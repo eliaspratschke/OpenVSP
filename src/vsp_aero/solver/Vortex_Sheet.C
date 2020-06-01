@@ -2703,7 +2703,9 @@ double VORTEX_SHEET::UpdateWakeLocation(int a)
 
        Delta = TrailingVortexList_[i]->UpdateWakeLocation(a);
 
-       TrailingVortexList_[i]->GetStreamlines();
+       //uncomment below to extract streamlines  
+
+       //TrailingVortexList_[i]->GetStreamlines();
        
        MaxDelta = MAX(MaxDelta,Delta);
     

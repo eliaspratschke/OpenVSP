@@ -1,5 +1,12 @@
 # Build and Installation Instructions for OpenVSP
 
+Additional stuff:
+
+streamline plotting function is in trail.c (GetStreamlines)
+the rest can be found in solver.c
+
+
+
 
 ### INTRODUCTION
 
